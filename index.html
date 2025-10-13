@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,14 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Malta Guinness Game Zone</title>
   <style>
-    body, html {margin:0;padding:0;height:100%;overflow:hidden;}
+    body, html {
+      margin:0;
+      padding:0;
+      height:100%;
+      overflow:hidden;
+    }
+
+    /* Loader */
     #loader {
-      position: fixed;top:0;left:0;width:100%;height:100%;
-      background: #541c1f; color: #FFD733;
-      display: flex;flex-direction:column;
-      align-items:center;justify-content:center;
+      position: fixed;
+      top:0;left:0;
+      width:100%;height:100%;
+      background: #541c1f;
+      color: #FFD733;
+      display: flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
       z-index:9999;
       font-family: 'Segoe UI', sans-serif;
+      text-align:center;
+      padding:1rem;
     }
     #loader h1 { 
       font-size: 2rem;
@@ -34,108 +47,129 @@
       font-weight: bold;
       cursor: pointer;
       box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      transition: transform 0.3s ease;
     }
-	  .form-container {
-        position: relative; /* Needed for padding-bottom trick */
-        width: 100%;
-        max-width: 800px; /* Optional: Set a maximum width for larger screens */
-        overflow: hidden; /* Hide any overflow */
-        padding-bottom: 75%; /* Adjust this percentage to maintain aspect ratio (height/width) */
-        /* For a 4:3 aspect ratio, use 75% (3/4 * 100). For 16:9, use 56.25% (9/16 * 100). */
-    }
-    .form-container iframe {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-		height: 100%;
-        border: none; /* Remove default iframe border */
+    #enter-btn:hover {
+      transform: scale(1.05);
     }
 
-    #content { display:none; height:100vh; overflow:auto;
-      background: url('Malta Background.jpg') center/cover fixed; }
-    .container {
-      padding:1rem; background:rgba(255,221,51,0.95);
-      color:#541c1f; font-family:'Segoe UI',sans-serif;
-    }
-    .logo {width:120px;margin:1rem auto;display:block;}
-    h1 {text-align:center;margin:0;color:#541c1f;}
-    .intro {text-align:center;margin:1rem 0;}
-    .games-grid {
-      display:grid;gap:1rem;
-      grid-template-columns:repeat(auto-fit, minmax(140px,1fr));
-    }
-    .game-card {
-      position:relative;
-      overflow:hidden;
-      border-radius:10px;
-      transform: scale(0.95);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      cursor:pointer;
-    }
-    .game-card img {
-      width:100%;display:block;
-      filter: brightness(0.9);
-      transition: filter 0.3s ease;
-    }
-    .game-card:hover {
-      transform: scale(1);
-      box-shadow:0 10px 20px rgba(0,0,0,0.3);
-    }
-    .game-card:hover img {
-      filter: brightness(1);
-    }
-    .game-title {
-      position:absolute;bottom:0;
-      width:100%;background:rgba(0,0,0,0.6);
-      color:#FFD733;padding:0.5rem;
-      font-weight:bold;text-align:center;
-      font-size:1rem;
-    }
-    .instructions {
-      margin-top:2rem;
-      padding:1rem;
-      border-radius:10px;
-      background:#fffbe6;
-    }
-    .instructions h2 {text-align:center;color:#A81410;}
-    .instructions ol {margin:0;padding-left:1.2rem;}
+    /* Sound button */
     #sound-toggle {
-      position:fixed;top:10px;right:10px;
-      background:#FFD733;color:#541c1f;
-      border:none;padding:0.5rem 1rem;
+      position:fixed;
+      top:10px;right:10px;
+      background:#FFD733;
+      color:#541c1f;
+      border:none;
+      padding:0.5rem 1rem;
       border-radius:20px;
       font-weight:bold;
       cursor:pointer;
       z-index:10000;
     }
+
+    /* Page content */
+    #content {
+      display:none;
+      height:100vh;
+      overflow:auto;
+      background: url('Malta Background.jpg') center/cover fixed;
+      font-family:'Segoe UI',sans-serif;
+    }
+
+    .container {
+      min-height:100vh;
+      background:rgba(255,221,51,0.92);
+      color:#541c1f;
+      padding:1rem;
+      position:relative;
+    }
+
+    .logo {
+      width:120px;
+      margin:1rem auto;
+      display:block;
+    }
+
+    .instructions {
+      margin-top:1rem;
+      padding:1rem;
+      border-radius:10px;
+      background: rgba(255, 255, 255, 0.85);
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    }
+
+    .instructions h2 {
+      text-align:center;
+      color:#A81410;
+    }
+
+    /* FORM STYLING */
+    .form-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      min-height: 100vh; /* Full screen height */
+      overflow: hidden;
+    }
+
+    .form-container {
+      width: 90%;
+      max-width: 800px;
+      height: 100vh;
+      overflow: hidden;
+      border-radius: 15px;
+      background: rgba(255, 255, 255, 0.85);
+      box-shadow: 0 5px 25px rgba(0,0,0,0.25);
+    }
+
+    .form-container iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      overflow: hidden;
+    }
+
+    /* Mobile adjustment */
+    @media (max-width: 768px) {
+      .form-container {
+        height: 1200px; /* extend for mobile to prevent internal scroll */
+      }
+    }
+
   </style>
 </head>
 <body>
 
+  <!-- LOADER -->
   <div id="loader">
-    <h1>Welcome to Malta Guinness x Trace in the city!</h1>
+    <h1>Welcome to Malta Guinness x Trace in the City!</h1>
     <p>Loading goodness…</p>
     <button id="enter-btn">Enter</button>
   </div>
 
+  <!-- Background Music -->
   <audio id="bgm" src="malta-jingle.mp3" loop></audio>
   <button id="sound-toggle">🔈 Mute</button>
 
+  <!-- MAIN CONTENT -->
   <div id="content">
     <div class="container">
       <img src="Malta Logo.png" alt="Malta Guinness Logo" class="logo"/>
-	  <br>
-	  <img src="Background.jpg" alt="Malta Guinness Logo" class="logo"/>
-
       <div class="instructions">
-		<div class="form-container">
-        <center><iframe src="https://docs.google.com/forms/d/e/1FAIpQLSe98Xt5IxV_7dKYdaLeWn1FjbVBdjFx2NDAtCvm3CoIg-Re6g/viewform?embedded=true" width="640" height="688" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe></center>
-       </div>
-		  </div>
+        <div class="form-wrapper">
+          <div class="form-container">
+            <iframe 
+              src="https://docs.google.com/forms/d/e/1FAIpQLSe98Xt5IxV_7dKYdaLeWn1FjbVBdjFx2NDAtCvm3CoIg-Re6g/viewform?embedded=true">
+              Loading…
+            </iframe>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
+  <!-- SCRIPT -->
   <script>
     const loader = document.getElementById('loader'),
           content = document.getElementById('content'),
@@ -147,7 +181,7 @@
       loader.style.display = 'none';
       content.style.display = 'block';
       audio.play().catch(() => {
-        console.warn('Autoplay failed due to browser policy');
+        console.warn('Autoplay prevented by browser policy');
       });
     });
 
