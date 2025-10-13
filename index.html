@@ -43,7 +43,14 @@
         padding-bottom: 75%; /* Adjust this percentage to maintain aspect ratio (height/width) */
         /* For a 4:3 aspect ratio, use 75% (3/4 * 100). For 16:9, use 56.25% (9/16 * 100). */
     }
-
+    .form-container iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+		height: auto;
+        border: none; /* Remove default iframe border */
+    }
 
     #content { display:none; height:100vh; overflow:auto;
       background: url('Malta Background.jpg') center/cover fixed; }
