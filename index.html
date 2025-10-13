@@ -35,16 +35,16 @@
       cursor: pointer;
       box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     }
-	
-
-    .form-container iframe {
-        position: absolute;
-        top: 0;
-        left: 0;
+	  .form-container {
+        position: relative; /* Needed for padding-bottom trick */
         width: 100%;
-		height: auto;
-        border: none; /* Remove default iframe border */
+        max-width: 800px; /* Optional: Set a maximum width for larger screens */
+        overflow: hidden; /* Hide any overflow */
+        padding-bottom: 75%; /* Adjust this percentage to maintain aspect ratio (height/width) */
+        /* For a 4:3 aspect ratio, use 75% (3/4 * 100). For 16:9, use 56.25% (9/16 * 100). */
     }
+
+
     #content { display:none; height:100vh; overflow:auto;
       background: url('Malta Background.jpg') center/cover fixed; }
     .container {
